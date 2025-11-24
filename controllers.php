@@ -3,7 +3,6 @@
 $query = 'create table IF NOT EXISTS articles (id INTEGER PRIMARY KEY AUTO_INCREMENT, title VARCHAR(50), date DATE, content TEXT)';
 $db =  new PDO('mysql::host=localhost;dbname=personal_blog', 'root', '1234');
 $db->exec($query);
-
 function articleList(): array
 {
   global $db;
@@ -13,7 +12,6 @@ function articleList(): array
   $result = $st->fetchAll(PDO::FETCH_ASSOC);
   return $result;
 }
-
 function articleById(int $id): ?array
 {
   global $db;
@@ -60,7 +58,6 @@ function postArticle($title, $date, $content)
   $st->execute([$title, $date, $content]);
   header('Location: admin', true, 303);
 }
-function putArticle($id, $title, $date, $content) {}
 function postDelete($id)
 {
   if (!is_numeric($id)) {
@@ -102,14 +99,13 @@ function postEdit($id, $title, $date, $content)
   $st->execute([$title, $date, $content, $id]);
   header('Location: /admin', true, 303);
 }
-
 function getAdmin()
 {
   $template = file_get_contents('templates/admin.html');
   $articles = articleList();
   $articleListItems = '';
   foreach ($articles as $article) {
-    ['id' => $id, 'title' => $title, 'date' => $date] = $article;
+    ['id' => $id, 'title' => $title] = $article;
     $delete = "<form style=\"display:inline\" method=\"post\" action=\"delete/$id\"><input type=\"submit\" value=\"Delete\" style=\"background:none;border:none;padding:0;margin:0;color:blue;text-decoration:underline;cursor:pointer;font:inherit\"></form>";
     $articleListItems .= "<li><a href=\"article/$id\">$title</a> <a href=\"edit/$id\">Edit</a> $delete</li>";
   }
