@@ -52,7 +52,7 @@ const ALLOWED_METHODS = [
 const NEEDS_AUTH = [
   0,
   0, //home
-  Method::POST->value | Method::PUT->value | Method::DELETE->value, //article
+  Method::POST->value, //article
   Method::GET->value, //admin
   Method::GET->value, //new
   Method::GET->value | Method::POST->value, //edit
@@ -121,7 +121,7 @@ switch ($route) {
         break;
       case Method::POST:
         ['id' => $id, 'title' => $title, 'date' => $date, 'content' => $content] = $_POST;
-        if (is_null($title) || is_null($date) || is_null($content)) {
+        if (!is_numeric($id) || is_null($title) || is_null($date) || is_null($content)) {
           http_response_code(400);
           exit;
         }
